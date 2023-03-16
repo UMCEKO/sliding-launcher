@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+}
+
+h1 {
+    color: white;
+}
+
+/* select {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+select.hover {
+    
+} */
+
+div {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#buttonA {
+    margin-top: 5px;
+    padding: 10px 25px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-width: 1px;
+    border-color: #000000;
+    border-style: solid;
+    font-family: arial, sans-serif;
+    font-size: large;
+    color: white;
+    transition-duration: 200ms;
+    font-weight: bold;
+}
+
+#buttonA:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #000000;
+}
+
+#dropdown {
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin: 5px;
+    border: none;
+    background-color: #282424;
+    color: white;
+    transition-duration: 500ms;
+}
+#dropdown:hover {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #3f3f3f;
+    color: white;
+}
+
+#buttonB {
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin: 5px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition-duration: 500ms;
+}
+#buttonB:hover {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+
+button:hover {
+    cursor: pointer;
+}
+
+#resetbtn {
+    background-color: #ffffff;
+
+    color: #0d9e0d;
+
+}
+#resetbtn:hover {
+    background-color: #0d9e0d;
+    color: #ffffff;
+}
+
+
+
+li {
+    font-size: medium;
+    list-style: none;
+    margin-top: 5px;
+}
+li a {
+    color: #096609;
+
+}
+
+input {
+    border-color: #0d9e0d;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    border-width: 1px;
+    font-family: arial, sans-serif;
+    font-weight: bolder;
+    padding-left: 15px;
+    padding-right: 15px;
+}
