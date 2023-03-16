@@ -16,6 +16,7 @@ class snakeHead{
         x:4,
         y:0,
     }
+    lastDirection
     direction=up
     isAlive=true
 }
@@ -34,16 +35,16 @@ let food={x:randomNumber(0,board.x),y:randomNumber(0,board.y)}
 
 document.addEventListener("keypress",(keyevent)=>{
     console.log(keyevent.key)
-    if(keyevent.key==="d" && (head.direction===1 || head.direction===3)){
+    if(keyevent.key==="d" && (head.lastDirection===1 || head.lastDirection===3)){
         head.direction=0
     }
-    else if(keyevent.key==="w" && (head.direction===2 || head.direction===0)){
+    else if(keyevent.key==="w" && (head.lastDirection===2 || head.lastDirection===0)){
         head.direction=1
     }
-    else if(keyevent.key==="a" && (head.direction===1 || head.direction===3)){
+    else if(keyevent.key==="a" && (head.lastDirection===1 || head.lastDirection===3)){
         head.direction=2
     }
-    else if(keyevent.key==="s" && (head.direction===2 || head.direction===0)){
+    else if(keyevent.key==="s" && (head.lastDirection===2 || head.lastDirection===0)){
         head.direction=3
     }
 })
@@ -92,6 +93,7 @@ function moveSnake(){
         }
         else{
             head.pos.y++
+            head.lastDirection===up
         }
     } else if(head.direction===right) {
         if(head.pos.x===board.x || bodyExists(head.pos.x+1,head.pos.y)){
@@ -99,6 +101,7 @@ function moveSnake(){
         }
         else{
             head.pos.x++
+            head.lastDirection===right
         }
     } else if(head.direction===left) {
         if(head.pos.x===0 || bodyExists(head.pos.x-1,head.pos.y)){
@@ -106,13 +109,15 @@ function moveSnake(){
         }
         else{
             head.pos.x--
+            head.lastDirection===left
         }
     } else{
         if(head.pos.y===0 || bodyExists(head.pos.x,head.pos.y-1)){
             head.isAlive=false
         }
         else{
-        head.pos.y--
+            head.pos.y--
+            head.lastDirection===down
         }
     }
 
