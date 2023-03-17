@@ -17,6 +17,7 @@ class snakeHead{
         y:0,
     }
     direction=up
+    lastDirection=this.direction
     isAlive=true
 }
 
@@ -33,18 +34,30 @@ let body=new snakeBody
 let food={x:randomNumber(0,board.x),y:randomNumber(0,board.y)}
 
 document.addEventListener("keypress",(keyevent)=>{
-    console.log(keyevent.key)
-    if(keyevent.key==="d" && (head.direction===1 || head.direction===3)){
-        head.direction=0
+    if(keyevent.key==="d" && head.lastDirection!==left){
+        if(head.lastDirection===right)
+        progressGame()
+        else
+        head.direction=right
     }
-    else if(keyevent.key==="w" && (head.direction===2 || head.direction===0)){
-        head.direction=1
+    else if(keyevent.key==="w" && head.lastDirection!==down){
+        if(head.lastDirection===up)
+        progressGame()
+        else
+        head.direction=up
     }
-    else if(keyevent.key==="a" && (head.direction===1 || head.direction===3)){
-        head.direction=2
+    else if(keyevent.key==="a" && head.lastDirection!==right){
+        if(head.lastDirection===left)
+        progressGame()
+        else
+        head.direction=left
     }
-    else if(keyevent.key==="s" && (head.direction===2 || head.direction===0)){
-        head.direction=3
+    else if(keyevent.key==="s" && head.lastDirection!==up){
+        if(head.lastDirection===down)
+        progressGame()
+        else
+        head.direction=down
+        
     }
 })
 
@@ -71,11 +84,9 @@ function turnLeft(){
     renderSnake()
 }
 
-
 function bodyExists(x,y){
     return JSON.stringify(body.posArray).includes(`{"px":${x},"py":${y}}`)
 }
-
 
 function moveSnake(){
     head.isFed=false
@@ -84,6 +95,7 @@ function moveSnake(){
     let tempPos={
         x: head.pos.x,
         y: head.pos.y
+    
     }
 
     if(head.direction===up){
@@ -92,6 +104,7 @@ function moveSnake(){
         }
         else{
             head.pos.y++
+            head.lastDirection=up
         }
     } else if(head.direction===right) {
         if(head.pos.x===board.x || bodyExists(head.pos.x+1,head.pos.y)){
@@ -99,6 +112,7 @@ function moveSnake(){
         }
         else{
             head.pos.x++
+            head.lastDirection=right
         }
     } else if(head.direction===left) {
         if(head.pos.x===0 || bodyExists(head.pos.x-1,head.pos.y)){
@@ -106,13 +120,15 @@ function moveSnake(){
         }
         else{
             head.pos.x--
+            head.lastDirection=left
         }
     } else{
         if(head.pos.y===0 || bodyExists(head.pos.x,head.pos.y-1)){
             head.isAlive=false
         }
         else{
-        head.pos.y--
+            head.pos.y--
+            head.lastDirection=down
         }
     }
 
@@ -141,9 +157,7 @@ function moveSnake(){
             body.pos.y[body.pos.y.length]=body.pos.y[body.pos.y.length-1]
             body.posArray[body.pos.y.length-1]={px: body.pos.x[body.pos.x.length-2], py: body.pos.y[body.pos.y.length-2]}
         }
-        food.x=randomNumber(0,board.x)
-        food.y=randomNumber(0,board.y)
-        while(bodyExists(food.x,food.y)){
+        while(bodyExists(food.x, food.y) || (head.pos.x===food.x && head.pos.y===food.y)){
             food.x=randomNumber(0,board.x)
             food.y=randomNumber(0,board.y)
         }
@@ -151,7 +165,6 @@ function moveSnake(){
         head.score++
     }
 }
-
 
 function directionToArrow(){
     if(head.direction===0){
@@ -165,7 +178,6 @@ function directionToArrow(){
     }
 }
 
-
 function snekStatus(){
     if(head.isFed===false && head.isAlive===true){
         return "normal"
@@ -178,13 +190,15 @@ function snekStatus(){
     }
 }
 
-
 function renderSnake(){
     let game=""
     for(let y=board.y;y>=0;y--){
         for(let x=0;x<=board.x;x++){
             if(head.pos.x===x && head.pos.y===y){
-                if(snekStatus()==="normal"){
+                if(document.getElementById("chkbx").checked){
+                    game+=directionToArrow()
+                }
+                else if(snekStatus()==="normal"){
                     game+="😐"
                 }
                 else if(snekStatus()==="fed"){
@@ -214,10 +228,10 @@ function renderSnake(){
 function progressGame(){
     if(head.isAlive===true){
         moveSnake()
+        renderSnake()
     }
-    renderSnake()
 }
 
-setInterval(() => {
-    progressGame()
-}, 200);
+
+clearInterval(gameTime)
+var gameTime = setInterval(progressGame, 200);
