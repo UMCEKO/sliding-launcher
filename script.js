@@ -1,237 +1,155 @@
-const gametable = document.getElementById("keke")
-
-const right=0
-const up=1
-const left=2
-const down=3
-const board={
-    x:9,
-    y:9
-}
-
-class snakeHead{
-    score=0
-    isFed=false;
-    pos={
-        x:4,
-        y:0,
+console.clear()
+/** @type {{datas:{images:string[], links:string[], title:string[],description:string[]}}}*/
+var data
+var currImageLink = document.getElementById("currImageLink")
+var currImage = document.getElementById("currImage")
+var prevImage = document.getElementById("prevImage")
+var nextImage = document.getElementById("nextImage")
+var header = document.getElementById("header")
+var paragraph = document.getElementById("paragraph")
+var currImageIndex = 0
+var nextImageIndex
+var prevImageIndex
+var isFirstImageLoaded = false
+fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.json")
+.then(response => response.text())
+.then(html => {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
+    data = JSON.parse(doc.body.textContent)
+    console.log(data)
+})
+.then(()=>{
+    if(data.datas.images.length != 1){
+        preloadImages(data.datas.images).then(()=>{
+            isFirstImageLoaded=true
+            currImage.src = data.datas.images[0]
+            if(data.datas.images.length>1){
+                nextImageIndex = 1
+                prevImageIndex = data.datas.images.length-1
+                nextImage.src = data.datas.images[1]
+                prevImage.src = data.datas.images[data.datas.images.length-1]
+            }
+            currImageLink.href = data.datas.links[0]
+            paragraph.innerText = data.datas.description[0]
+            header.innerText = data.datas.title[0]
+            
+        })
     }
-    direction=up
-    lastDirection=this.direction
-    isAlive=true
-}
-
-class snakeBody{
-    pos={
-        x:[],
-        y:[]
-    }
-    posArray=[]
-}
-
-let head=new snakeHead
-let body=new snakeBody
-let food={x:randomNumber(0,board.x),y:randomNumber(0,board.y)}
-
-document.addEventListener("keypress",(keyevent)=>{
-    if(keyevent.key==="d" && head.lastDirection!==left){
-        if(head.lastDirection===right)
-        progressGame()
-        else
-        head.direction=right
-    }
-    else if(keyevent.key==="w" && head.lastDirection!==down){
-        if(head.lastDirection===up)
-        progressGame()
-        else
-        head.direction=up
-    }
-    else if(keyevent.key==="a" && head.lastDirection!==right){
-        if(head.lastDirection===left)
-        progressGame()
-        else
-        head.direction=left
-    }
-    else if(keyevent.key==="s" && head.lastDirection!==up){
-        if(head.lastDirection===down)
-        progressGame()
-        else
-        head.direction=down
-        
+    else{
+        document.getElementById("rbutton").hidden = true
+        document.getElementById("lbutton").hidden = true
     }
 })
 
 
-console.log(head)
 
 
-function randomNumber(min,max){
-    return Math.floor(min+Math.random()*(max-min))
+document.getElementById("rbutton").addEventListener("click", ()=>{
+    rightButtonClicked()
+})
+
+
+document.getElementById("lbutton").addEventListener("click", ()=>{
+    leftButtonClicked()
+})
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+let isFunctionExecuted = false;
+
+function rightButtonClicked() {
+  if (!isFunctionExecuted) {
+    isFunctionExecuted = true;
+
+    prevImageIndex=currImageIndex
+    currImageIndex=nextImageIndex
+
+
+    if(nextImageIndex+1 > data.datas.images.length-1){
+      nextImageIndex=0
+    } 
+    else {
+      nextImageIndex++
+    }
+
+    nextImage.className = "RightSlideToMiddle"
+    currImage.className = "MiddleSlideToLeft"
+    setTimeout(() => {
+      nextImage.className = "NextDefault"
+      currImage.className = "currDefault"
+
+      nextImage.src = data.datas.images[nextImageIndex]
+      prevImage.src = data.datas.images[prevImageIndex]
+      currImage.src = data.datas.images[currImageIndex]
+      currImageLink.href = data.datas.links[currImageIndex]
+      paragraph.innerText = data.datas.description[currImageIndex]
+      header.innerText = data.datas.title[currImageIndex]
+
+      isFunctionExecuted = false;
+    }, 1000);
+  }
+}
+
+function leftButtonClicked() {
+  if (!isFunctionExecuted) {
+    isFunctionExecuted = true;
+
+    nextImageIndex=currImageIndex
+    currImageIndex=prevImageIndex
+
+    if(prevImageIndex-1 < 0){
+      prevImageIndex=data.datas.images.length-1
+    } 
+    else {
+      prevImageIndex--
+    }
+
+    prevImage.className = "LeftSlideToMiddle"
+    currImage.className = "MiddleSlideToRight"
+    setTimeout(() => {
+      prevImage.className = "PrevDefault"
+      currImage.className = "currDefault"
+
+      nextImage.src = data.datas.images[nextImageIndex]
+      prevImage.src = data.datas.images[prevImageIndex]
+      currImage.src = data.datas.images[currImageIndex]
+      currImageLink.href = data.datas.links[currImageIndex]
+      paragraph.innerText = data.datas.description[currImageIndex]
+      header.innerText = data.datas.title[currImageIndex]
+
+      isFunctionExecuted = false;
+    }, 1000);
+  }
+}
+
+const preloadImages = (imageUrls) => {
+    const promises = imageUrls.map((url) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+            resolve(img);
+            };
+            img.onerror = reject;
+            img.src = url;
+        });
+    });
+    return Promise.all(promises);
+};
+  
+  
+  // Call the preloadImages function to preload all images
+
+
+async function SlideLeft(){
+
 }
 
 
-function turnRight(){
-    head.direction--
-    if(head.direction<0)
-    head.direction=3
-    head.direction%=4
-    renderSnake()
-}
 
-function turnLeft(){
-    head.direction++
-    head.direction%=4
-    renderSnake()
-}
-
-function bodyExists(x,y){
-    return JSON.stringify(body.posArray).includes(`{"px":${x},"py":${y}}`)
-}
-
-function moveSnake(){
-    head.isFed=false
+var ake = new FileReader()
 
 
-    let tempPos={
-        x: head.pos.x,
-        y: head.pos.y
-    
-    }
 
-    if(head.direction===up){
-        if(head.pos.y===board.y || bodyExists(head.pos.x,head.pos.y+1)){
-            head.isAlive=false
-        }
-        else{
-            head.pos.y++
-            head.lastDirection=up
-        }
-    } else if(head.direction===right) {
-        if(head.pos.x===board.x || bodyExists(head.pos.x+1,head.pos.y)){
-            head.isAlive=false
-        }
-        else{
-            head.pos.x++
-            head.lastDirection=right
-        }
-    } else if(head.direction===left) {
-        if(head.pos.x===0 || bodyExists(head.pos.x-1,head.pos.y)){
-            head.isAlive=false
-        }
-        else{
-            head.pos.x--
-            head.lastDirection=left
-        }
-    } else{
-        if(head.pos.y===0 || bodyExists(head.pos.x,head.pos.y-1)){
-            head.isAlive=false
-        }
-        else{
-            head.pos.y--
-            head.lastDirection=down
-        }
-    }
-
-
-    if(head.score>0){
-        if(head.isAlive===true){
-            for(let i=body.pos.x.length-1;i>0;i--){
-                body.pos.x[i]=body.pos.x[i-1]
-                body.pos.y[i]=body.pos.y[i-1]
-                body.posArray[i]={px: body.pos.x[i-1], py: body.pos.y[i-1]}
-            }
-            body.pos.x[0]=tempPos.x
-            body.pos.y[0]=tempPos.y
-            body.posArray[0]={px: tempPos.x, py: tempPos.y}
-        }
-    }
-
-
-    if(head.pos.y===food.y && head.pos.x===food.x){
-        if(head.score===0){
-            body.pos.x[0]=head.pos.x
-            body.pos.y[0]=head.pos.y
-            body.posArray[0]={px: head.pos.x, py: head.pos.y}
-        }else{
-            body.pos.x[body.pos.x.length]=body.pos.x[body.pos.x.length-1]
-            body.pos.y[body.pos.y.length]=body.pos.y[body.pos.y.length-1]
-            body.posArray[body.pos.y.length-1]={px: body.pos.x[body.pos.x.length-2], py: body.pos.y[body.pos.y.length-2]}
-        }
-        while(bodyExists(food.x, food.y) || (head.pos.x===food.x && head.pos.y===food.y)){
-            food.x=randomNumber(0,board.x)
-            food.y=randomNumber(0,board.y)
-        }
-        head.isFed=true
-        head.score++
-    }
-}
-
-function directionToArrow(){
-    if(head.direction===0){
-        return "➡️"
-    }else if(head.direction===1){
-        return "⬆️"
-    }else if(head.direction===2){
-        return "⬅️"
-    }else{
-        return "⬇️"
-    }
-}
-
-function snekStatus(){
-    if(head.isFed===false && head.isAlive===true){
-        return "normal"
-    }
-    else if(head.isFed===true && head.isAlive===true){
-        return "fed"
-    }
-    else if(head.isFed===false && head.isAlive===false){
-        return "dead"
-    }
-}
-
-function renderSnake(){
-    let game=""
-    for(let y=board.y;y>=0;y--){
-        for(let x=0;x<=board.x;x++){
-            if(head.pos.x===x && head.pos.y===y){
-                if(document.getElementById("chkbx").checked){
-                    game+=directionToArrow()
-                }
-                else if(snekStatus()==="normal"){
-                    game+="😐"
-                }
-                else if(snekStatus()==="fed"){
-                    game+="😋"
-                }
-                else if(snekStatus()==="dead"){
-                    game+="😭"
-                }
-            }
-            else if(food.x===x && food.y===y){
-                game+="🍬"
-            }
-            else if(bodyExists(x,y)){
-                game+="🟢"
-            }
-            else{
-                game+="⚫"
-            }
-        }
-        game+="\n"
-    }
-    game+=`Direction = ${directionToArrow()}\n X: ${head.pos.x}\n Y: ${head.pos.y}`
-    gametable.innerText=game
-}
-
-
-function progressGame(){
-    if(head.isAlive===true){
-        moveSnake()
-        renderSnake()
-    }
-}
-
-
-clearInterval(gameTime)
-var gameTime = setInterval(progressGame, 200);

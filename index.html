@@ -5,20 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://use.typekit.net/lkd7qzp.css">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+
+    </style>
 </head>
 <body>
-    <div>
-        <h1 id="keke"></h1>
-        <button id="buttonB" onclick="turnLeft()">Turn Left</button>
-        <button id="buttonB" onclick="progressGame()">Progress Game</button>
-        <button id="buttonB" onclick="turnRight()">Turn Right</button>
-        <div>
-            Want arrow as head?
-            <input type="checkbox" name="assd" id="chkbx">
+    <div id="frame">
+
+
+
+
+
+
+        <img id="prevImage" class="PrevDefault" src="https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png">
+
+        <img id="nextImage" class="NextDefault" src="https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png">
+       
+        <a id="currImageLink" href="" >
+            <img id="currImage" class="currDefault" src="https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png">
+            <div id="textSection">
+                <header id="header" class="tk-trajan-pro-3"></header>
+                <p id="paragraph" ></p>
+            </div>
+        </a>
+        <div id="spaceBetween">
+            <button id="lbutton"><img class="fitcontent" src="https://cdn-icons-png.flaticon.com/512/271/271220.png" alt=""></button>
+            <button id="rbutton"><img class="fitcontent" src="https://cdn-icons-png.flaticon.com/512/32/32213.png" alt=""></button>
         </div>
+
+        
     </div>
     <script src="script.js"></script>
-        
 </body>
 </html>
