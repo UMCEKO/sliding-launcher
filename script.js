@@ -24,12 +24,10 @@ fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.j
         preloadImages(data.datas.images).then(()=>{
             isFirstImageLoaded=true
             currImage.src = data.datas.images[0]
-            if(data.datas.images.length>1){
-                nextImageIndex = 1
-                prevImageIndex = data.datas.images.length-1
-                nextImage.src = data.datas.images[1]
-                prevImage.src = data.datas.images[data.datas.images.length-1]
-            }
+            nextImageIndex = 1
+            prevImageIndex = data.datas.images.length-1
+            nextImage.src = data.datas.images[1]
+            prevImage.src = data.datas.images[data.datas.images.length-1]
             currImageLink.href = data.datas.links[0]
             paragraph.innerText = data.datas.description[0]
             header.innerText = data.datas.title[0]
@@ -39,6 +37,14 @@ fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.j
     else{
         document.getElementById("rbutton").hidden = true
         document.getElementById("lbutton").hidden = true
+        preloadImages(data.datas.images).then(()=>{
+            isFirstImageLoaded=true
+            currImage.src = data.datas.images[0]
+            currImageLink.href = data.datas.links[0]
+            paragraph.innerText = data.datas.description[0]
+            header.innerText = data.datas.title[0]
+            
+        })
     }
 })
 
