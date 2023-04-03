@@ -54,8 +54,8 @@ header {
 }
 
 #header {
-    font-family: "trajan-pro-3", serif;
-    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -64,7 +64,10 @@ a {
 }
 
 #textSection {
-    background-color: #00000080;
+    padding-top: 20px;
+    padding-left:20px ;
+    color: white;
+    background-color: #000000d0;
     width: 100%;
     position: absolute;
     bottom: 0px;
@@ -73,7 +76,7 @@ a {
 }
 
 #textSection:hover {
-    
+    overflow: auto;
     height: 200px;
     bottom: 0;
 }
