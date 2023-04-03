@@ -76,7 +76,7 @@ a {
     position: absolute;
     bottom: 0px;
     height: 60px;
-    transition-duration: 1000ms;
+    transition-duration: 500ms;
     overflow: auto;
 }
 
