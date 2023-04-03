@@ -41,6 +41,10 @@ img {
     margin: 10px;
 }
 
+.fitimg {
+    object-fit: cover;
+}
+
 .fitcontent {
     position: relative;
     max-height: 50%; /* Make the image fit inside the button vertically */
@@ -73,6 +77,7 @@ a {
     bottom: 0px;
     height: 60px;
     transition-duration: 1000ms;
+    overflow: auto;
 }
 
 #textSection:hover {

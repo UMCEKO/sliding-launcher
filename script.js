@@ -48,7 +48,15 @@ fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.j
     }
 })
 
+document.getElementById("textSection").addEventListener("mouseenter",()=>{
+  
 
+})
+document.getElementById("textSection").addEventListener("mouseleave",()=>{
+  
+  document.getElementById("textSection").scrollTo({top: 0, behavior: 'smooth'});
+  
+})
 
 
 document.getElementById("rbutton").addEventListener("click", ()=>{
