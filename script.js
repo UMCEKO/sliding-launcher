@@ -10,8 +10,13 @@ var paragraph = document.getElementById("paragraph")
 var currImageIndex = 0
 var nextImageIndex
 var prevImageIndex
+var reverseorder = true
 var isFirstImageLoaded = false
-fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.json")
+function randUrl(){
+  return  (Math.random()*10000)
+}
+console.log("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.json?random=" + randUrl())
+fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.json?random=" + randUrl())
 .then(response => response.text())
 .then(html => {
     const parser = new DOMParser()
@@ -21,6 +26,12 @@ fetch("https://raw.githubusercontent.com/UMCEKO/UmutLauncher-Data/main/ImgData.j
 })
 .then(()=>{
     if(data.datas.images.length != 1){
+      if(reverseorder){
+        data.datas.images.reverse()
+        data.datas.description.reverse()
+        data.datas.title.reverse()
+        data.datas.links.reverse()
+      }
         preloadImages(data.datas.images).then(()=>{
             isFirstImageLoaded=true
             currImage.src = data.datas.images[0]
@@ -89,11 +100,11 @@ function rightButtonClicked() {
       nextImageIndex++
     }
 
-    nextImage.className = "RightSlideToMiddle"
-    currImage.className = "MiddleSlideToLeft"
+    nextImage.className = "RightSlideToMiddle fitimg"
+    currImage.className = "MiddleSlideToLeft fitimg"
     setTimeout(() => {
-      nextImage.className = "NextDefault"
-      currImage.className = "currDefault"
+      nextImage.className = "NextDefault fitimg"
+      currImage.className = "currDefault fitimg"
 
       nextImage.src = data.datas.images[nextImageIndex]
       prevImage.src = data.datas.images[prevImageIndex]
@@ -121,12 +132,11 @@ function leftButtonClicked() {
       prevImageIndex--
     }
 
-    prevImage.className = "LeftSlideToMiddle"
-    currImage.className = "MiddleSlideToRight"
+    prevImage.className = "LeftSlideToMiddle fitimg"
+    currImage.className = "MiddleSlideToRight fitimg"
     setTimeout(() => {
-      prevImage.className = "PrevDefault"
-      currImage.className = "currDefault"
-
+      prevImage.className = "PrevDefault fitimg"
+      currImage.className = "currDefault fitimg"
       nextImage.src = data.datas.images[nextImageIndex]
       prevImage.src = data.datas.images[prevImageIndex]
       currImage.src = data.datas.images[currImageIndex]
